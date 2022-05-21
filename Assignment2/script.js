@@ -8,7 +8,7 @@ let CompleteArray=[];
 let AllTaskInArray=[];
 let completed=document.querySelector('.Completed');
 let TaskList=document.querySelector('.Task-list');
-
+/*****************Add Button ************** */
 AddBtn.addEventListener("click",()=>{
         
     if(displayTaskBar){
@@ -20,7 +20,7 @@ AddBtn.addEventListener("click",()=>{
    
 })
 
-
+/*****************For text Area************** */
 textArea.addEventListener('click',()=>{
    
     textArea.addEventListener('keydown',(e)=>{
@@ -44,7 +44,7 @@ textArea.addEventListener('click',()=>{
 
 
 
-
+/*****************Complete Task**************** */
 completed.addEventListener('click',()=>{
     completed.style.color='white';
     TaskList.style.color='gray';
@@ -60,7 +60,7 @@ completed.addEventListener('click',()=>{
     
     
 })
-
+/**********************Task-List**************** */
 TaskList.addEventListener('click',()=>{
     SwitchTab()  
 })
@@ -127,7 +127,7 @@ function createTask(textvalue,done){
     }
     
 }
-
+/******************Switch Tab*****************/
 function SwitchTab(){
     completed.style.color='gray';
     TaskList.style.color='white';
@@ -136,7 +136,7 @@ function SwitchTab(){
     DeleteBtn('done');
     DoneBTN()
 }
-
+/********************Delete Task************/
 function DeleteValue(a,idx){
     a= a.filter((item,index)=>{
         if(idx!=index){
