@@ -1,0 +1,87 @@
+*{
+    margin: 0;
+    padding: 0;
+
+}
+body{
+    background-color: #7FB5FF;
+}
+
+.header{
+    width:100%;
+    height: 70px;
+    background-color: #E9EFC0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-operation{
+    width: 20%;
+    height: 50px;
+    background-color:white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.material-symbols-outlined{
+    height: 30px;
+    font-size: 30px;
+    cursor: pointer;
+    /* background-color: #dfe2e3; */
+    color: rgb(9, 8, 8);
+}
+
+.input-Taxt{
+    
+    height: 300px;
+    width: 500px;
+    background-color: #DDDDDD;
+    margin-top: 15vh;
+    margin-left: 30vw;
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+input{
+    height: 70px;
+    width: 400px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.text-area{
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+    margin-top: 10px;
+    text-align: center;
+    padding: 5px;
+    background-color: #7FB5FF;
+}
+
+.name{
+    padding: 10px;
+    width:20vw ;
+    /* height: 30px; */
+    background-color: white;
+}
+.descrept{
+    padding: 10px;
+    width: 50vw;
+    background-color: white;
+}
+.size{
+    padding: 10px;
+    width: 20vw;
+    background-color: white;
+}
+
+
+
+
+
+

@@ -4,10 +4,11 @@ let AllTaskArea=document.querySelector('.All-task');
 let main=document.querySelector('.main');
 let AllTask=document.querySelector('.All-task');
 let displayTaskBar=false;
-let CompleteArray=[];
 let AllTaskInArray=[];
 let completed=document.querySelector('.Completed');
 let TaskList=document.querySelector('.Task-list');
+let count =0;
+// call();
 /*****************Add Button ************** */
 AddBtn.addEventListener("click",()=>{
         
@@ -22,19 +23,14 @@ AddBtn.addEventListener("click",()=>{
 
 /*****************For text Area************** */
 textArea.addEventListener('click',()=>{
-   
-    textArea.addEventListener('keydown',(e)=>{
+       textArea.addEventListener('keydown',(e)=>{
         let key=e.key;
         if(key=='Enter'){
-            let textvalue=[];
-            textvalue.push(textArea.value);
             if(textArea.value!=""){
-                AllTaskInArray.push(textArea.value);
-                createTask( textvalue,'done');
+                createTask( textArea.value,'done',2,AllTaskInArray.length);
+                count++;
                 textArea.value="";
                 textArea.style.display='none';
-                DeleteBtn('done')
-                DoneBTN()
                 SwitchTab()
             }
         }
@@ -44,64 +40,26 @@ textArea.addEventListener('click',()=>{
 
 
 
-/*****************Complete Task**************** */
+// /*****************Complete Task**************** */
 completed.addEventListener('click',()=>{
     completed.style.color='white';
     TaskList.style.color='gray';
-    if(CompleteArray.length===0){
-        return;
-    }else{
-        RemoveAll();
-        console.log(CompleteArray);
-        createTask(CompleteArray,'');
-        DeleteBtn('');
-        DoneBTN()
-    }
-    
-    
+    RemoveAll()
+    console.log(AllTaskInArray);
+    for(let i=0;i< AllTaskInArray.length;i++){
+        if(AllTaskInArray[i].flag===1){
+            createTask( AllTaskInArray[i].massage,'',AllTaskInArray[i].flag,i);
+        }  
+    } 
 })
-/**********************Task-List**************** */
+
+
+// /**********************Task-List**************** */
 TaskList.addEventListener('click',()=>{
     SwitchTab()  
 })
 
-
-
-//****************Done function ******************/
-function DoneBTN(){
-    let DoneBtn=document.querySelectorAll('.done');
-    for(let i=0;i<DoneBtn.length;i++ ){
-        let CompleteTask=DoneBtn[i];
-        CompleteTask.addEventListener('click',()=>{
-            CompleteArray.push(AllTaskInArray[i]);
-            AllTaskInArray= AllTaskInArray.filter((item,index)=>{
-                if(i!=index){
-                    return item;
-                }
-            });
-            CompleteTask.parentElement.remove();
-        })
-    }
-}
-
-
-//*****************Delete function************* */
-function DeleteBtn(btn){
-    let DeleteBtn=document.querySelectorAll('.delete');
-    for(let i=0;i<DeleteBtn.length;i++ ){
-        let deletTask=DeleteBtn[i];
-        deletTask.addEventListener('click',()=>{
-            if(btn==='done'){
-                AllTaskInArray=DeleteValue(AllTaskInArray,i)
-            }else{
-                CompleteArray=DeleteValue(CompleteArray,i)
-            }
-            deletTask.parentElement.remove();
-        })
-    }
-}
-
-/*********************Remove Function  */
+// /*********************Remove Function  */
 function RemoveAll(){
     let removeAll=document.querySelectorAll('.task');
     for(let i=0;i<removeAll.length;i++ ){
@@ -112,38 +70,83 @@ function RemoveAll(){
 
 /**************Create Task******** */
 
-function createTask(textvalue,done){
-    for(let i=0;i<textvalue.length;i++){
-        if(textvalue[i]!=undefined){
-            let main1=document.createElement('div');
-            main1.setAttribute('class','task')
-            main1.innerHTML=`
-                            <span class="material-symbols-outlined done">${done}</span>
-                            <p class="text">${textvalue[i]}</p>
-                            <span class="material-symbols-outlined delete"> delete</span>
-                        `
-            AllTask.appendChild(main1);
+function createTask(textvalue,done,btn,idx){
+    
+    if(btn===0||btn===2){
+        let main1=document.createElement('div');
+        main1.setAttribute('class','task')
+        main1.innerHTML=`
+                        <span class="material-symbols-outlined done">${done}</span>
+                        <p class="text">${textvalue}</p>
+                        <span class="material-symbols-outlined delete"> delete</span>
+                         `
+        AllTask.appendChild(main1);
+        let obj={
+            id : count,
+            flag : 0,
+            massage:textvalue,
         }
+        if(btn===2){
+            AllTaskInArray.push(obj);
+            updateLocol();
+        }
+        
+        let DeleteBtn=main1.querySelector('.delete');
+        DeleteBtn.addEventListener('click',()=>{
+            AllTaskInArray.splice(idx,1);
+            updateLocol()
+            DeleteBtn.parentElement.remove();
+        })
+
+        let Done =main1.querySelector('.done')
+        Done.addEventListener('click',()=>{
+            console.log('hii');
+            console.log(obj.flag);
+            AllTaskInArray[idx].flag=1;
+            updateLocol();
+            Done.parentElement.remove();
+        })
+    }else if(btn==1){
+        let main1=document.createElement('div');
+        main1.setAttribute('class','task')
+        main1.innerHTML=`
+                        <span class="material-symbols-outlined done">${done}</span>
+                        <p class="text">${textvalue}</p>
+                        <span class="material-symbols-outlined delete"> delete</span>
+                    `
+        AllTask.appendChild(main1);
+        let DeleteBtn=main1.querySelector('.delete');
+        DeleteBtn.addEventListener('click',()=>{
+            AllTaskInArray.splice(idx,1);
+            updateLocol();
+            DeleteBtn.parentElement.remove();
+        })
     }
     
 }
-/******************Switch Tab*****************/
+// /******************Switch Tab*****************/
 function SwitchTab(){
     completed.style.color='gray';
     TaskList.style.color='white';
     RemoveAll()
-    createTask(AllTaskInArray,'done');
-    DeleteBtn('done');
-    DoneBTN()
-}
-/********************Delete Task************/
-function DeleteValue(a,idx){
-    a= a.filter((item,index)=>{
-        if(idx!=index){
-            return item;
+    for(let i=0;i< AllTaskInArray.length;i++){
+        if(AllTaskInArray[i].flag===0){
+            createTask( AllTaskInArray[i].massage,'done',AllTaskInArray[i].flag,i);
         }
-    });
+       
+    }
+   
 }
 
 
 
+function updateLocol(){
+    localStorage.setItem('task',JSON.stringify(AllTaskInArray));
+} 
+
+
+function call(){
+    AllTaskInArray=JSON.parse(localStorage.getItem('task'));
+    console.log(AllTaskInArray);
+    SwitchTab() ;
+}
