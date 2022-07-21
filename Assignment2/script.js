@@ -26,6 +26,7 @@ textArea.addEventListener('click',()=>{
        textArea.addEventListener('keydown',(e)=>{
         let key=e.key;
         if(key=='Enter'){
+            console.log(key);
             if(textArea.value!=""){
                 createTask( textArea.value,'done',2,AllTaskInArray.length);
                 count++;
@@ -78,26 +79,41 @@ function createTask(textvalue,done,btn,idx){
         main1.innerHTML=`
                         <span class="material-symbols-outlined done">${done}</span>
                         <p class="text">${textvalue}</p>
+                        <span class="material-symbols-outlined Edit"> edit_note</span>
                         <span class="material-symbols-outlined delete"> delete</span>
                          `
         AllTask.appendChild(main1);
         let obj={
-            id : count,
+            id : getId(),
             flag : 0,
             massage:textvalue,
         }
         if(btn===2){
             AllTaskInArray.push(obj);
+            console.log(AllTaskInArray);
             updateLocol();
         }
-        
+        let EditBtn=main1.querySelector('.Edit');
+        let TaskBtn=main1.querySelector('.text');
+        EditBtn.addEventListener('click',()=>{
+            TaskBtn.setAttribute('contenteditable',"true")
+            TaskBtn.addEventListener('keydown',(e)=>{
+                let key=e.key;
+                if(key=='Enter'){
+                    AllTaskInArray[idx].massage=TaskBtn.innerHTML;
+                    updateLocol()
+                    TaskBtn.setAttribute('contenteditable',"false")
+                }
+             })
+         
+         })
         let DeleteBtn=main1.querySelector('.delete');
         DeleteBtn.addEventListener('click',()=>{
             AllTaskInArray.splice(idx,1);
             updateLocol()
             DeleteBtn.parentElement.remove();
         })
-
+        
         let Done =main1.querySelector('.done')
         Done.addEventListener('click',()=>{
             console.log('hii');
@@ -129,6 +145,7 @@ function SwitchTab(){
     completed.style.color='gray';
     TaskList.style.color='white';
     RemoveAll()
+    console.log(AllTaskInArray.length);
     for(let i=0;i< AllTaskInArray.length;i++){
         if(AllTaskInArray[i].flag===0){
             createTask( AllTaskInArray[i].massage,'done',AllTaskInArray[i].flag,i);
@@ -146,7 +163,16 @@ function updateLocol(){
 
 
 function call(){
-    AllTaskInArray=JSON.parse(localStorage.getItem('task'));
+    // updateLocol();
+    if(localStorage.getItem('task')){
+        AllTaskInArray=JSON.parse(localStorage.getItem('task'));
+    }
+    
+    // updateLocol();
     console.log(AllTaskInArray);
     SwitchTab() ;
+}
+function getId(){
+     var uid = new ShortUniqueId();
+     return uid();
 }

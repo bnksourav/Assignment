@@ -99,6 +99,13 @@ h3{
     color: #646FD4;
     /* font-variation-settings: 'FILL' 1; */
 }
+.Edit{
+    width: 5.5%;
+    height: 3vh ;
+    cursor: pointer;
+    color: #1629da;
+    /* font-variation-settings: 'FILL' 1; */
+}
 .All-task{
     height: 52vh;
     overflow-y: auto;
